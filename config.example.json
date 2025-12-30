@@ -1,0 +1,27 @@
+{
+  "openai": {
+    "api_key": "sk-your-openai-api-key-here",
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 2000
+  },
+  "search": {
+    "engine": "duckduckgo",
+    "tavily_api_key": "",
+    "serpapi_key": "",
+    "max_results": 3
+  },
+  "steam": {
+    "num_reviews": 10,
+    "max_reviews": 100,
+    "language": "schinese",
+    "filter": "recent",
+    "request_delay": 1.0
+  },
+  "agent": {
+    "verbose": true,
+    "max_iterations": 5,
+    "handle_parsing_errors": true
+  }
+}
+
