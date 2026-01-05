@@ -68,6 +68,15 @@ class Config:
                 'verbose': True,
                 'max_iterations': 5,
                 'handle_parsing_errors': True
+            },
+            'ppt': {
+                'output_dir': './output',
+                'default_slides': 5,
+                'font_name': '微软雅黑',
+                'title_font_size': 44,
+                'content_font_size': 24,
+                'primary_color': [0, 112, 192],  # RGB 主色调（蓝色）
+                'accent_color': [255, 192, 0]    # RGB 强调色（金色）
             }
         }
     
@@ -192,6 +201,42 @@ class Config:
     def AGENT_HANDLE_PARSING_ERRORS(self) -> bool:
         """是否处理解析错误"""
         return bool(self.get('agent.handle_parsing_errors', True))
+    
+    # PPT 配置
+    @property
+    def PPT_OUTPUT_DIR(self) -> str:
+        """PPT 输出目录"""
+        return self.get('ppt.output_dir', './output')
+    
+    @property
+    def PPT_DEFAULT_SLIDES(self) -> int:
+        """PPT 默认页数"""
+        return int(self.get('ppt.default_slides', 5))
+    
+    @property
+    def PPT_FONT_NAME(self) -> str:
+        """PPT 字体名称"""
+        return self.get('ppt.font_name', '微软雅黑')
+    
+    @property
+    def PPT_TITLE_FONT_SIZE(self) -> int:
+        """PPT 标题字号"""
+        return int(self.get('ppt.title_font_size', 44))
+    
+    @property
+    def PPT_CONTENT_FONT_SIZE(self) -> int:
+        """PPT 内容字号"""
+        return int(self.get('ppt.content_font_size', 24))
+    
+    @property
+    def PPT_PRIMARY_COLOR(self) -> list:
+        """PPT 主色调 RGB"""
+        return self.get('ppt.primary_color', [0, 112, 192])
+    
+    @property
+    def PPT_ACCENT_COLOR(self) -> list:
+        """PPT 强调色 RGB"""
+        return self.get('ppt.accent_color', [255, 192, 0])
     
     def get_config_source(self) -> str:
         """返回配置来源"""

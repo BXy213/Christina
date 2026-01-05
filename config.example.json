@@ -22,6 +22,15 @@
     "verbose": true,
     "max_iterations": 5,
     "handle_parsing_errors": true
+  },
+  "ppt": {
+    "output_dir": "./output",
+    "default_slides": 5,
+    "font_name": "微软雅黑",
+    "title_font_size": 44,
+    "content_font_size": 24,
+    "primary_color": [0, 112, 192],
+    "accent_color": [255, 192, 0]
   }
 }
 

@@ -10,6 +10,7 @@ from langchain_classic.agents import create_tool_calling_agent, AgentExecutor
 from config import config
 from steam_tool import create_steam_reviews_tool
 from search_tool import create_search_tool
+from ppt_tool import create_ppt_tool
 from logger import logger
 
 
@@ -72,8 +73,13 @@ class AIAssistant:
         except Exception as e:
             logger.error(f"[ERROR] Steam tool init failed: {e}")
         
-        # TODO: 在这里添加更多工具
-        # tools.append(create_xxx_tool())
+        # 添加 PPT 生成工具
+        try:
+            ppt_tool = create_ppt_tool(self.llm)
+            tools.append(ppt_tool)
+            logger.log("[OK] PPT generator tool enabled")
+        except Exception as e:
+            logger.error(f"[ERROR] PPT tool init failed: {e}")
         
         return tools
     
@@ -90,11 +96,16 @@ class AIAssistant:
 1. 回答各种问题
 2. 通过网络搜索工具获取最新信息
 3. 获取 Steam 游戏的评论和评价
-4. 分析和总结搜索结果
+4. 生成 PPT 演示文稿
+5. 分析和总结搜索结果
 
 重要指南：
 - 当用户询问最新信息、实时数据、新闻时，主动使用网络搜索工具
 - 当用户询问游戏评价、Steam评分、玩家反馈时，主动使用 Steam 评论工具
+- 当用户需要制作PPT、演示文稿、幻灯片时，使用 PPT 生成工具
+  * 如果用户提供了提纲，直接使用提纲生成
+  * 如果用户只给了主题，先帮用户规划内容大纲，然后生成
+  * 支持图片引用格式：[图片: 本地路径] 或 [图片: URL]
 - 搜索后，用清晰、结构化的方式总结信息
 - 如果搜索结果不够准确，尝试换个关键词再次搜索
 - 对于一般性问题，可以直接回答，无需搜索

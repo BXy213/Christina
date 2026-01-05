@@ -58,3 +58,9 @@ tmp/
 temp/
 *.tmp
 
+# Generated PPT files
+output/*.pptx
+output/*.jpg
+output/*.png
+!output/.gitkeep
+
