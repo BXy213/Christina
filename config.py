@@ -68,6 +68,24 @@ class Config:
                 'verbose': True,
                 'max_iterations': 5,
                 'handle_parsing_errors': True
+            },
+            'server': {
+                'host': '0.0.0.0',
+                'port': 5000,
+                'debug': False,
+                'secret_key': 'your-secret-key-change-in-production',
+                'cors_origins': ['*'],
+                'max_content_length': 16777216,
+                'session_timeout': 3600,
+                'rate_limit': {
+                    'enabled': True,
+                    'requests_per_minute': 30
+                },
+                'ssl': {
+                    'enabled': False,
+                    'cert_path': '',
+                    'key_path': ''
+                }
             }
         }
     
@@ -192,6 +210,67 @@ class Config:
     def AGENT_HANDLE_PARSING_ERRORS(self) -> bool:
         """是否处理解析错误"""
         return bool(self.get('agent.handle_parsing_errors', True))
+    
+    # 服务器配置
+    @property
+    def SERVER_HOST(self) -> str:
+        """服务器监听地址"""
+        return self.get('server.host', '0.0.0.0')
+    
+    @property
+    def SERVER_PORT(self) -> int:
+        """服务器端口"""
+        return int(self.get('server.port', 5000))
+    
+    @property
+    def SERVER_DEBUG(self) -> bool:
+        """是否开启调试模式"""
+        return bool(self.get('server.debug', False))
+    
+    @property
+    def SERVER_SECRET_KEY(self) -> str:
+        """Flask 密钥"""
+        return self.get('server.secret_key', 'your-secret-key-change-in-production')
+    
+    @property
+    def CORS_ORIGINS(self) -> list:
+        """CORS 允许的来源"""
+        return self.get('server.cors_origins', ['*'])
+    
+    @property
+    def MAX_CONTENT_LENGTH(self) -> int:
+        """最大请求体大小（字节）"""
+        return int(self.get('server.max_content_length', 16777216))
+    
+    @property
+    def SESSION_TIMEOUT(self) -> int:
+        """会话超时时间（秒）"""
+        return int(self.get('server.session_timeout', 3600))
+    
+    @property
+    def RATE_LIMIT_ENABLED(self) -> bool:
+        """是否启用速率限制"""
+        return bool(self.get('server.rate_limit.enabled', True))
+    
+    @property
+    def RATE_LIMIT_RPM(self) -> int:
+        """每分钟请求限制"""
+        return int(self.get('server.rate_limit.requests_per_minute', 30))
+    
+    @property
+    def SSL_ENABLED(self) -> bool:
+        """是否启用 SSL"""
+        return bool(self.get('server.ssl.enabled', False))
+    
+    @property
+    def SSL_CERT_PATH(self) -> str:
+        """SSL 证书路径"""
+        return self.get('server.ssl.cert_path', '')
+    
+    @property
+    def SSL_KEY_PATH(self) -> str:
+        """SSL 密钥路径"""
+        return self.get('server.ssl.key_path', '')
     
     def get_config_source(self) -> str:
         """返回配置来源"""

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christina AI - 智能助手</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">✦</span>
+                    <span class="logo-text">Christina</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <button class="new-chat-btn" id="newChatBtn">
+                    <span class="btn-icon">+</span>
+                    <span>新对话</span>
+                </button>
+                
+                <div class="features-section">
+                    <h3 class="section-title">功能特性</h3>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-icon">🔍</span>
+                            <span>实时网络搜索</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🎮</span>
+                            <span>Steam 游戏评论</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">💬</span>
+                            <span>上下文对话记忆</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🤖</span>
+                            <span>智能问答</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">在线</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 聊天区域 -->
+            <div class="chat-container" id="chatContainer">
+                <!-- 欢迎消息 -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-logo">✦</div>
+                    <h1>Christina AI</h1>
+                    <p class="welcome-subtitle">智能助手，随时为您服务</p>
+                    
+                    <div class="suggestions">
+                        <h3>试试这些问题</h3>
+                        <div class="suggestion-cards">
+                            <button class="suggestion-card" data-message="最近有什么热门游戏推荐？">
+                                <span class="card-icon">🎮</span>
+                                <span class="card-text">最近有什么热门游戏推荐？</span>
+                            </button>
+                            <button class="suggestion-card" data-message="帮我查一下《黑神话悟空》的Steam评价">
+                                <span class="card-icon">🔍</span>
+                                <span class="card-text">帮我查一下《黑神话悟空》的Steam评价</span>
+                            </button>
+                            <button class="suggestion-card" data-message="今天的科技新闻有哪些？">
+                                <span class="card-icon">📰</span>
+                                <span class="card-text">今天的科技新闻有哪些？</span>
+                            </button>
+                            <button class="suggestion-card" data-message="介绍一下人工智能的发展历史">
+                                <span class="card-icon">🤖</span>
+                                <span class="card-text">介绍一下人工智能的发展历史</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 消息列表 -->
+                <div class="messages" id="messages"></div>
+            </div>
+            
+            <!-- 输入区域 -->
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="输入您的问题..." 
+                        rows="1"
+                        maxlength="4000"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span class="char-count"><span id="charCount">0</span> / 4000</span>
+                    <span class="powered-by">Powered by GPT-4o-mini</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- 加载遮罩 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Christina 正在思考...</p>
+    </div>
+    
+    <!-- Toast 通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
+

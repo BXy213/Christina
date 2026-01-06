@@ -22,6 +22,24 @@
     "verbose": true,
     "max_iterations": 5,
     "handle_parsing_errors": true
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 5000,
+    "debug": false,
+    "secret_key": "your-secret-key-change-in-production",
+    "cors_origins": ["*"],
+    "max_content_length": 16777216,
+    "session_timeout": 3600,
+    "rate_limit": {
+      "enabled": true,
+      "requests_per_minute": 30
+    },
+    "ssl": {
+      "enabled": false,
+      "cert_path": "",
+      "key_path": ""
+    }
   }
 }
 
