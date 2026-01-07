@@ -77,6 +77,7 @@ class Config:
                 'cors_origins': ['*'],
                 'max_content_length': 16777216,
                 'session_timeout': 3600,
+                'sessions_dir': 'data/sessions',
                 'rate_limit': {
                     'enabled': True,
                     'requests_per_minute': 30
@@ -246,6 +247,11 @@ class Config:
     def SESSION_TIMEOUT(self) -> int:
         """会话超时时间（秒）"""
         return int(self.get('server.session_timeout', 3600))
+    
+    @property
+    def SESSIONS_DIR(self) -> str:
+        """会话文件存储目录"""
+        return self.get('server.sessions_dir', 'data/sessions')
     
     @property
     def RATE_LIMIT_ENABLED(self) -> bool:

@@ -50,8 +50,11 @@ class LoggerMaster:
         # 清除所有现有的 handler（避免重复添加）
         self.logger.handlers.clear()
         
-        # 创建格式化器
-        formatter = logging.Formatter('%(message)s')
+        # 创建格式化器（带时间戳和级别）
+        formatter = logging.Formatter(
+            '[%(asctime)s] [%(levelname)s] %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
         
         # 文件 handler
         file_handler = logging.FileHandler(self.log_file, encoding='utf-8')

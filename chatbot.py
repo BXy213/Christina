@@ -156,4 +156,37 @@ class AIAssistant:
     def reset_memory(self):
         """重置对话记忆"""
         self.chat_history = []
-        logger.log("✨ 对话历史已清除")
+        logger.log("Session memory cleared")
+    
+    def export_history(self) -> list:
+        """
+        导出对话历史为可序列化格式
+        
+        Returns:
+            对话历史列表
+        """
+        return [
+            {
+                "role": "human" if isinstance(msg, HumanMessage) else "ai",
+                "content": msg.content
+            }
+            for msg in self.chat_history
+        ]
+    
+    def import_history(self, history: list):
+        """
+        从序列化格式导入对话历史
+        
+        Args:
+            history: 对话历史列表
+        """
+        self.chat_history = []
+        for msg in history:
+            if msg["role"] == "human":
+                self.chat_history.append(HumanMessage(content=msg["content"]))
+            else:
+                self.chat_history.append(AIMessage(content=msg["content"]))
+    
+    def get_history_count(self) -> int:
+        """获取对话历史消息数量"""
+        return len(self.chat_history)

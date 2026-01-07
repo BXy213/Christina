@@ -31,6 +31,7 @@
     "cors_origins": ["*"],
     "max_content_length": 16777216,
     "session_timeout": 3600,
+    "sessions_dir": "data/sessions",
     "rate_limit": {
       "enabled": true,
       "requests_per_minute": 30

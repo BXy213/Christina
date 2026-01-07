@@ -61,3 +61,6 @@ temp/
 # Server files
 *.pid
 start.sh
+
+# Data files
+data/
