@@ -58,3 +58,6 @@ tmp/
 temp/
 *.tmp
 
+# Server files
+*.pid
+start.sh
