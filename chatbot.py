@@ -33,11 +33,15 @@ class AIAssistant:
             logger.log(message)
         
         # 初始化 LLM
-        self.llm = ChatOpenAI(
-            model=config.MODEL_NAME,
-            temperature=config.TEMPERATURE,
-            api_key=config.OPENAI_API_KEY
-        )
+        llm_kwargs = {
+            'model': config.MODEL_NAME,
+            'temperature': config.TEMPERATURE,
+            'api_key': config.LLM_API_KEY
+        }
+        if config.LLM_BASE_URL:
+            llm_kwargs['base_url'] = config.LLM_BASE_URL
+        
+        self.llm = ChatOpenAI(**llm_kwargs)
         
         # 初始化搜索工具
         self.tools = self._setup_tools()

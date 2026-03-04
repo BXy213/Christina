@@ -45,11 +45,17 @@ class Config:
     def _set_defaults(self):
         """设置默认配置"""
         self._config_data = {
-            'openai': {
-                'api_key': '',
-                'model': 'gpt-4o-mini',
-                'temperature': 0.7,
-                'max_tokens': 2000
+            'llm': {
+                'use': 'openai',
+                'models': {
+                    'openai': {
+                        'api_key': '',
+                        'base_url': '',
+                        'model': 'gpt-4o-mini',
+                        'temperature': 0.7,
+                        'max_tokens': 2000
+                    }
+                }
             },
             'search': {
                 'engine': 'duckduckgo',
@@ -95,7 +101,7 @@ class Config:
         使用点号路径获取配置值
         
         Args:
-            path: 配置路径，如 'openai.api_key'
+            path: 配置路径，如 'llm.use'
             default: 默认值
             
         Returns:
@@ -114,26 +120,40 @@ class Config:
         
         return value
     
-    # OpenAI 配置
+    # LLM 配置
     @property
-    def OPENAI_API_KEY(self) -> str:
-        """OpenAI API Key"""
-        return self.get('openai.api_key', '')
+    def _llm_provider(self) -> str:
+        """当前选中的 LLM 提供商名称"""
+        return self.get('llm.use', 'openai')
+    
+    def _llm_config(self, key: str, default=None):
+        """获取当前选中的 LLM 提供商的配置"""
+        return self.get(f'llm.models.{self._llm_provider}.{key}', default)
+    
+    @property
+    def LLM_API_KEY(self) -> str:
+        """当前 LLM 的 API Key"""
+        return self._llm_config('api_key', '')
+    
+    @property
+    def LLM_BASE_URL(self) -> str:
+        """当前 LLM 的 API Base URL"""
+        return self._llm_config('base_url', '')
     
     @property
     def MODEL_NAME(self) -> str:
-        """OpenAI 模型名称"""
-        return self.get('openai.model', 'gpt-4o-mini')
+        """当前 LLM 的模型名称"""
+        return self._llm_config('model', 'gpt-4o-mini')
     
     @property
     def TEMPERATURE(self) -> float:
         """模型温度参数"""
-        return float(self.get('openai.temperature', 0.7))
+        return float(self._llm_config('temperature', 0.7))
     
     @property
     def MAX_TOKENS(self) -> int:
         """最大 token 数"""
-        return int(self.get('openai.max_tokens', 2000))
+        return int(self._llm_config('max_tokens', 2000))
     
     # 搜索配置
     @property
@@ -283,17 +303,9 @@ class Config:
         return self._config_source
     
     def print_config_info(self):
-        """打印配置信息（安全的方式，处理编码问题）"""
-        try:
-            source_map = {
-                'config.json': 'config.json',
-                'default': 'default'
-            }
-            source_text = source_map.get(self._config_source, self._config_source)
-            logger.log(f"[OK] Config loaded from: {source_text}")
-        except:
-            # 如果有编码问题，使用纯 ASCII
-            logger.log(f"[OK] Config loaded from: {self._config_source}")
+        """打印配置信息"""
+        logger.log(f"[OK] Config loaded from: {self._config_source}")
+        logger.log(f"[OK] LLM provider: {self._llm_provider} ({self.MODEL_NAME})")
     
     def validate(self) -> tuple[bool, str]:
         """
@@ -302,8 +314,9 @@ class Config:
         Returns:
             (是否有效, 错误信息)
         """
-        if not self.OPENAI_API_KEY:
-            return False, "[ERROR] 未找到 OPENAI_API_KEY，请在配置文件中设置"
+        if not self.LLM_API_KEY:
+            provider = self._llm_provider
+            return False, f"[ERROR] LLM provider '{provider}' 未配置 api_key，请在 config.json 的 llm.models.{provider} 中设置"
         
         if not any([self.TAVILY_API_KEY, self.SERPAPI_KEY]):
             # 注意：这里返回字符串，由调用者决定如何输出
